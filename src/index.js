@@ -1,12 +1,27 @@
 // require('dotenv').config({path: './env'})
 import dotenv from "dotenv"
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
 
 dotenv.config({
     path: '/home/hrncode/youtube-backend/.env'
 })
 
 connectDB()
+.then(() => {
+    const PORT = process.env.PORT || 8000;
+    app.on("error", (err)=>{
+        console.log("error: ", err)
+        throw err
+    })
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+})
+ 
+.catch(err => {
+    console.log("Mongo db conneciton failed !!!", err)
+})
 
 
 
